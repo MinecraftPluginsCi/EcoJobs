@@ -1,6 +1,5 @@
 package com.willfp.ecojobs.jobs
 
-import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.gui.menu
 import com.willfp.eco.core.gui.onLeftClick
 import com.willfp.eco.core.gui.slot
@@ -11,18 +10,18 @@ import com.willfp.eco.core.items.builder.ItemStackBuilder
 import com.willfp.eco.util.formatEco
 import com.willfp.ecojobs.api.hasJobActive
 import com.willfp.ecojobs.api.leaveJob
+import com.willfp.ecojobs.plugin
 import org.bukkit.entity.Player
 
 class JobLeaveGUI(
-    plugin: EcoPlugin,
     job: Job
 ) {
     private val menu = menu(plugin.configYml.getInt("leave-gui.rows")) {
         val maskPattern = plugin.configYml.getStrings("leave-gui.mask.pattern").toTypedArray()
         val maskItems = MaskItems.fromItemNames(plugin.configYml.getStrings("leave-gui.mask.materials"))
 
-        title = plugin.configYml.getString("leave-gui.title")
-            .replace("%job%", job.name)
+        title = (job.title ?: plugin.configYml.getString("leave-gui.title")
+            .replace("%job%", job.name))
             .formatEco()
 
         setMask(
